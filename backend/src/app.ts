@@ -1,11 +1,14 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import prisma from './config/database';
+import userRoutes from './routes/user.routes';
 
 const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use('/api/users', userRoutes);
 
 app.get('/api/health', async (req: Request, res: Response) => {
   try {
