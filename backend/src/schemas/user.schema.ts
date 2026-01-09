@@ -30,3 +30,13 @@ export const registerUserSchema = z.object({
     .string()
     .regex(/^\d{7,8}-[\dkK]$/, 'RUT debe tener formato 12345678-9')
 });
+
+export const loginUserSchema = z.object({
+  email: z
+    .string()
+    .email('Email inválido'),
+  
+  password: z
+    .string()
+    .min(1, 'La contraseña es requerida')
+});
