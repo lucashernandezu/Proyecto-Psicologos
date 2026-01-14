@@ -1,13 +1,13 @@
-import  jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
+import { Role } from '@prisma/client';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'clave secreta';
-
+const JWT_SECRET = process.env.JWT_SECRET || 'tu_clave_secreta_temporal';
 const JWT_EXPIRES_IN = '7d';
 
 interface JwtPayload {
   userId: number;
   email: string;
-  role: string;
+  role: Role;
 }
 
 export const generateToken = (payload: JwtPayload): string => {

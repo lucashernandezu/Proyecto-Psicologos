@@ -76,6 +76,37 @@ class UserService {
 
     }
 
+    async getUserById(userId: number): Promise<UserResponse> {
+        const user = await prisma.user.findUnique({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        const { password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
+    }
+
+    async getAllActiveUsers(): Promise<UserResponse[]> {
+        const users = await prisma.user.findMany({
+            where: { is_active: true }
+        });
+
+        return users.map(({ password, ...user }) => user);
+    }
+
+    async getDashboardStats() {
+        return {
+            totalUsers: await prisma.user.count(),
+            totalPatients: await prisma.registeredPatient.count(),
+            totalPsychologists: await prisma.psychologist.count(),
+            totalAppointments: await prisma.appointment.count()
+        };
+    }
+
+
 }
 
 export default new UserService();
