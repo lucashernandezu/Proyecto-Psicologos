@@ -33,7 +33,7 @@ async function main() {
       first_name: 'Admin',
       last_name: 'Sistema',
       phone: '+56912345678',
-      rut: '11111111-1',
+      rut: '11111111-1', // ✅ Válido
       is_active: true,
     },
   });
@@ -46,7 +46,7 @@ async function main() {
       first_name: 'María',
       last_name: 'González',
       phone: '+56987654321',
-      rut: '22222222-2',
+      rut: '22222222-2', // ✅ Válido
       is_active: true,
     },
   });
@@ -59,7 +59,7 @@ async function main() {
       first_name: 'Pedro',
       last_name: 'Silva',
       phone: '+56987654322',
-      rut: '55555555-5',
+      rut: '12345678-5', // ✅ Cambiado (55555555-5 es inválido)
       is_active: true,
     },
   });
@@ -72,7 +72,7 @@ async function main() {
       first_name: 'Juan',
       last_name: 'Pérez',
       phone: '+56911111111',
-      rut: '33333333-3',
+      rut: '33333333-3', // ✅ Válido
       is_active: true,
     },
   });
@@ -85,7 +85,7 @@ async function main() {
       first_name: 'Ana',
       last_name: 'Torres',
       phone: '+56911111112',
-      rut: '66666666-6',
+      rut: '7654321-6', // ✅ Cambiado (66666666-6 es inválido)
       is_active: true,
     },
   });
@@ -151,7 +151,7 @@ async function main() {
       first_name: 'Carlos',
       last_name: 'Silva',
       phone: '+56922222222',
-      rut: '44444444-4',
+      rut: '44444444-4', // ✅ Válido
       consent: true,
     },
   });
@@ -162,7 +162,7 @@ async function main() {
       first_name: 'Lucía',
       last_name: 'Morales',
       phone: '+56922222223',
-      rut: '77777777-7',
+      rut: '99999999-9', // ✅ Cambiado (77777777-7 es inválido)
       consent: true,
     },
   });
@@ -237,11 +237,11 @@ async function main() {
     data: {
       psychologist_id: psychologist1.id,
       registered_patient_id: registeredPatient1.id,
-      appointment_date: new Date('2026-01-13'), // Lunes
+      appointment_date: new Date('2026-01-20'), // Lunes futuro
       appointment_time: new Date('1970-01-01T10:00:00Z'),
       modality: 'PRESENCIAL',
       status: 'CONFIRMED',
-      blocked_until: new Date('2026-01-13T09:45:00Z'),
+      blocked_until: new Date('2026-01-20T09:45:00Z'),
       patient_confirmed_at: new Date(),
     },
   });
@@ -251,11 +251,11 @@ async function main() {
     data: {
       psychologist_id: psychologist1.id,
       unregistered_patient_id: unregisteredPatient1.id,
-      appointment_date: new Date('2026-01-15'), // Miércoles
+      appointment_date: new Date('2026-01-22'), // Miércoles futuro
       appointment_time: new Date('1970-01-01T15:00:00Z'),
       modality: 'ONLINE',
       status: 'PENDING',
-      blocked_until: new Date('2026-01-15T14:45:00Z'),
+      blocked_until: new Date('2026-01-22T14:45:00Z'),
     },
   });
 
@@ -264,11 +264,11 @@ async function main() {
     data: {
       psychologist_id: psychologist2.id,
       registered_patient_id: registeredPatient2.id,
-      appointment_date: new Date('2026-01-14'), // Martes
+      appointment_date: new Date('2026-01-21'), // Martes futuro
       appointment_time: new Date('1970-01-01T16:00:00Z'),
       modality: 'PRESENCIAL',
       status: 'PENDING',
-      blocked_until: new Date('2026-01-14T15:45:00Z'),
+      blocked_until: new Date('2026-01-21T15:45:00Z'),
     },
   });
 
@@ -288,11 +288,11 @@ async function main() {
     data: {
       psychologist_id: psychologist1.id,
       unregistered_patient_id: unregisteredPatient2.id,
-      appointment_date: new Date('2026-01-17'), // Viernes
+      appointment_date: new Date('2026-01-24'), // Viernes futuro
       appointment_time: new Date('1970-01-01T10:30:00Z'),
       modality: 'ONLINE',
       status: 'CONFIRMED',
-      blocked_until: new Date('2026-01-17T10:15:00Z'),
+      blocked_until: new Date('2026-01-24T10:15:00Z'),
     },
   });
 
