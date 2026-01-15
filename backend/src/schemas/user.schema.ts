@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Role } from '@prisma/client';
+import { validateRut } from '../utils/rut.utils';
 
 export const registerUserSchema = z.object({
   email: z
@@ -29,6 +30,9 @@ export const registerUserSchema = z.object({
   rut: z
     .string()
     .regex(/^\d{7,8}-[\dkK]$/, 'RUT debe tener formato 12345678-9')
+    .refine(validateRut, {
+      message: 'RUT inválido: el dígito verificador no es correcto'
+    })
 });
 
 export const loginUserSchema = z.object({

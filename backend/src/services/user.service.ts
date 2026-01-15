@@ -2,6 +2,7 @@ import prisma from '../config/database'
 import { RegisterUserDTO, UpdateUserDTO, LoginUserDTO, UserResponse, AuthResponse } from '../types/user.types'
 import { hashPassword, comparePassword } from '../utils/password.utils';
 import { generateToken } from '../utils/jwt.utils';
+import { cleanRut } from '../utils/rut.utils';
 
 class UserService {
     async createUser(data: RegisterUserDTO): Promise<UserResponse> {
@@ -22,6 +23,8 @@ class UserService {
             throw new Error('El rut ya esta registrado')
         }
 
+        const cleanedRut = cleanRut(data.rut);
+
         const hashedPassword = await hashPassword(data.password);
 
         const user = await prisma.user.create({
@@ -32,7 +35,7 @@ class UserService {
                 first_name: data.first_name,
                 last_name: data.last_name,
                 phone: data.phone,
-                rut: data.rut,
+                rut: cleanedRut,
             }
         });
 

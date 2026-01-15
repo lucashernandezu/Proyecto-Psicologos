@@ -14,23 +14,28 @@ enum Role {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique @db.VarChar(255)
-  password   String   @db.VarChar(255)
-  role       Role
-  first_name String   @db.VarChar(255)
-  last_name  String   @db.VarChar(255)
-  phone      String   @db.VarChar(20)
-  rut        String   @unique @db.VarChar(12)
-  is_active  Boolean  @default(true)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id                   Int       @id @default(autoincrement())
+  email                String    @unique @db.VarChar(255)
+  password             String    @db.VarChar(255)
+  role                 Role
+  first_name           String    @db.VarChar(255)
+  last_name            String    @db.VarChar(255)
+  phone                String    @db.VarChar(20)
+  rut                  String    @unique @db.VarChar(12)
+  is_active            Boolean   @default(true)
+  
+  reset_token          String?   @db.VarChar(255)
+  reset_token_expires  DateTime?
+  
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
 
   registered_patient RegisteredPatient?
   psychologist       Psychologist?
 
   @@map("users")
 }
+
 
 model UnregisteredPatient {
   id         Int      @id @default(autoincrement())
