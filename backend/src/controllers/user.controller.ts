@@ -141,6 +141,34 @@ class UserController {
     }
   }
 
+  async changePassword(req: Request, res: Response) {
+    try {
+      const userId = req.user!.userId;
+
+      const { current_password, new_password } = req.body;
+
+      await userService.changeUserPassword(userId, current_password, new_password);
+
+      res.status(200).json({
+        success: true,
+        message: 'Contraseña actualizada exitosamente'
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: 'Error al cambiar contraseña'
+        });
+      }
+    }
+  }
+
+
 
 }
 
