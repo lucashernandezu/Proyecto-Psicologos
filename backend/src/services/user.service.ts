@@ -2,7 +2,6 @@ import prisma from '../config/database'
 import { RegisterUserDTO, UpdateUserDTO, LoginUserDTO, UserResponse, AuthResponse } from '../types/user.types'
 import { hashPassword, comparePassword } from '../utils/password.utils';
 import { generateToken } from '../utils/jwt.utils';
-import { error } from 'node:console';
 
 class UserService {
     async createUser(data: RegisterUserDTO): Promise<UserResponse> {
@@ -129,7 +128,36 @@ class UserService {
         return userWithoutPassword;
     }
 
+    async changeUserPassword(userId: number, currentPassword: string, newPassword: string): Promise<void> {
+        const user = await prisma.user.findUnique({
+            where: { id: userId }
+        });
 
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        const isCurrentPasswordValide = await comparePassword(currentPassword, user.password);
+
+        if (!isCurrentPasswordValide) {
+            throw new Error('La contraseña actual es incorrecta');
+        }
+
+        const isSamePassword = await comparePassword(newPassword, user.password);
+
+        if (isSamePassword) {
+            throw new Error('La nueva contraseña debe ser diferente a la actual');
+        }
+
+        const hashedPassword = await hashPassword(newPassword);
+
+        await prisma.user.update({
+            where: { id: userId },
+            data: { password: hashedPassword }
+        });
+
+
+    }
 }
 
 export default new UserService();
