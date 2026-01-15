@@ -2,6 +2,7 @@ import prisma from '../config/database'
 import { RegisterUserDTO, UpdateUserDTO, LoginUserDTO, UserResponse, AuthResponse } from '../types/user.types'
 import { hashPassword, comparePassword } from '../utils/password.utils';
 import { generateToken } from '../utils/jwt.utils';
+import { error } from 'node:console';
 
 class UserService {
     async createUser(data: RegisterUserDTO): Promise<UserResponse> {
@@ -104,6 +105,28 @@ class UserService {
             totalPsychologists: await prisma.psychologist.count(),
             totalAppointments: await prisma.appointment.count()
         };
+    }
+
+    async updateUserProfile(userId: number, data: UpdateUserDTO): Promise<UserResponse> {
+
+        const existingUser = await prisma.user.findUnique({
+            where: { id: userId }
+        })
+
+        if (!existingUser) {
+            throw new Error('Usuario no encontrado')
+        }
+
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                first_name: data.first_name,
+                last_name: data.last_name,
+                phone: data.phone
+            }
+        })
+        const { password, ...userWithoutPassword } = updatedUser;
+        return userWithoutPassword;
     }
 
 

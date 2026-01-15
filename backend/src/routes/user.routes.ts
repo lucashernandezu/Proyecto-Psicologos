@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import userController from '../controllers/user.controller';
 import { validate } from '../middlewares/validate.middleware';
-import { registerUserSchema, loginUserSchema } from '../schemas/user.schema';
+import { registerUserSchema, loginUserSchema, updateProfileSchema } from '../schemas/user.schema';
 import { authenticateToken, authorizeRoles } from '../middlewares/auth.middleware';
 
 const router = Router();
@@ -10,6 +10,7 @@ router.post('/register', validate(registerUserSchema), userController.register);
 router.post('/login', validate(loginUserSchema), userController.login);
 
 router.get('/profile', authenticateToken, userController.getProfile);
+router.put('/profile', authenticateToken,validate(updateProfileSchema),userController.updateProfile)
 
 router.get('/', authenticateToken, authorizeRoles(['ADMIN']), userController.getAllUsers);
 

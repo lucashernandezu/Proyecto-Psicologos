@@ -40,3 +40,23 @@ export const loginUserSchema = z.object({
     .string()
     .min(1, 'La contraseña es requerida')
 });
+
+export const updateProfileSchema = z.object({
+  first_name: z
+  .string()
+  .min(1, 'El nombre no puede estar vacio')
+  .max(255, 'El nombre es muy largo')
+  .optional(),
+
+  last_name: z
+  .string()
+  .min(1, 'El apellido no puede estar vacio')
+  .max(255, 'El apellido es muy largo')
+  .optional(),
+
+  phone: z
+  .string()
+  .regex(/^\+569\d{8}$/, 'Teléfono debe tener formato +56912345678')
+  .optional()
+
+})
