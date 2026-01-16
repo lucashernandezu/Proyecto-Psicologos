@@ -48,3 +48,18 @@ export interface AuthResponse {
     user: UserResponse;
     token: string;
 }
+
+export interface ForgotPasswordDTO{
+    email: string
+}
+
+export interface ResetPasswordDTO{
+    token: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+export interface AuthMessageResponse{
+    success: boolean;
+    message: string;
+}
