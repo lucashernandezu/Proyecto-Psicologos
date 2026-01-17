@@ -35,16 +35,6 @@ export const registerUserSchema = z.object({
     })
 });
 
-export const loginUserSchema = z.object({
-  email: z
-    .string()
-    .email('Email inválido'),
-
-  password: z
-    .string()
-    .min(1, 'La contraseña es requerida')
-});
-
 export const updateProfileSchema = z.object({
   first_name: z
     .string()
