@@ -1,10 +1,45 @@
 import prisma from "../config/database";
 import transporter from "../config/email";
 import { generateToken, getTokenExpiration, isTokenExpired } from "../utils/token.utils";
-import { hashPassword } from "../utils/password.utils";
-import { ForgotPasswordDTO, ResetPasswordDTO, AuthMessageResponse } from '../types/user.types';
+import { hashPassword, comparePassword } from "../utils/password.utils";
+import { ForgotPasswordDTO, ResetPasswordDTO, AuthMessageResponse, LoginUserDTO, AuthResponse } from '../types/user.types';
+import { generateTokenLogin } from '../utils/jwt.utils';
+
 
 class AuthService {
+    async authenticateUser(data: LoginUserDTO): Promise<AuthResponse> {
+        const user = await prisma.user.findUnique({
+            where: { email: data.email }
+        });
+
+        if (!user) {
+            throw new Error('Credenciales inválidas');
+        }
+
+        if (!user.is_active) {
+            throw new Error('Usuario desactivado');
+        }
+
+        const isPasswordValid = await comparePassword(data.password, user.password);
+
+        if (!isPasswordValid) {
+            throw new Error('Credenciales inválidas');
+        }
+
+        const token = generateTokenLogin({
+            userId: user.id,
+            email: user.email,
+            role: user.role
+        });
+
+        const { password, ...userWithoutPassword } = user;
+
+        return {
+            user: userWithoutPassword,
+            token
+        };
+    }
+
     async requestPasswordReset(data: ForgotPasswordDTO): Promise<AuthMessageResponse> {
 
         const user = await prisma.user.findUnique({

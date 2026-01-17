@@ -26,3 +26,13 @@ export const resetPasswordSchema = z.object({
     path: ['confirmPassword']
 
 })
+
+export const loginUserSchema = z.object({
+  email: z
+    .string()
+    .email('Email inválido'),
+
+  password: z
+    .string()
+    .min(1, 'La contraseña es requerida')
+});

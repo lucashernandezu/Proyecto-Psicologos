@@ -1,7 +1,6 @@
 import prisma from '../config/database'
 import { RegisterUserDTO, UpdateUserDTO, LoginUserDTO, UserResponse, AuthResponse } from '../types/user.types'
 import { hashPassword, comparePassword } from '../utils/password.utils';
-import { generateToken } from '../utils/jwt.utils';
 import { cleanRut } from '../utils/rut.utils';
 
 class UserService {
@@ -43,42 +42,6 @@ class UserService {
         return userWithoutPassword;
 
     }
-
-    async authenticateUser(data: LoginUserDTO): Promise<AuthResponse> {
-
-        const user = await prisma.user.findUnique({
-            where: { email: data.email }
-        })
-
-        if (!user) {
-            throw new Error('Credenciales inválidas');
-        }
-
-        if (!user.is_active) {
-            throw new Error('Usuario desactivado');
-        }
-
-        const isPasswordValide = await comparePassword(data.password, user.password);
-
-        if (!isPasswordValide) {
-            throw new Error('Credenciales invalidas')
-        }
-
-        const token = generateToken({
-            userId: user.id,
-            email: user.email,
-            role: user.role
-        });
-
-        const { password, ...userWithoutPassword } = user;
-
-        return {
-            user: userWithoutPassword,
-            token
-        };
-
-    }
-
     async getUserById(userId: number): Promise<UserResponse> {
         const user = await prisma.user.findUnique({
             where: { id: userId }
