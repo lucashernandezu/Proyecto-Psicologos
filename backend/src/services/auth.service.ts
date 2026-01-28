@@ -7,7 +7,9 @@ import { generateTokenLogin } from '../utils/jwt.utils';
 
 
 class AuthService {
+
     async authenticateUser(data: LoginUserDTO): Promise<AuthResponse> {
+        
         const user = await prisma.user.findUnique({
             where: { email: data.email }
         });
@@ -89,6 +91,7 @@ class AuthService {
     }
 
     async resetPassword(data: ResetPasswordDTO): Promise<AuthMessageResponse> {
+        
         const { token, newPassword, confirmPassword } = data;
 
         if (newPassword !== confirmPassword) {

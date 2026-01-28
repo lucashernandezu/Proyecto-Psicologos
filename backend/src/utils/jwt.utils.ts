@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { Role } from '@prisma/client';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'tu_clave_secreta_temporal';
+const JWT_SECRET = process.env.JWT_SECRET
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET no configurado');
+}
 const JWT_EXPIRES_IN = '7d';
 
 interface JwtPayload {

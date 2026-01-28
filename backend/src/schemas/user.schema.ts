@@ -9,7 +9,7 @@ export const registerUserSchema = z.object({
 
   password: z
     .string()
-    .min(6, 'La contraseña debe tener mínimo 6 caracteres'),
+    .min(8, 'La contraseña debe tener mínimo 8 caracteres'),
 
   role: z.nativeEnum(Role),
 
@@ -31,7 +31,7 @@ export const registerUserSchema = z.object({
     .string()
     .regex(/^\d{7,8}-[\dkK]$/, 'RUT debe tener formato 12345678-9')
     .refine(validateRut, {
-      message: 'RUT inválido: el dígito verificador no es correcto'
+      message: 'RUT inválido'
     })
 });
 
