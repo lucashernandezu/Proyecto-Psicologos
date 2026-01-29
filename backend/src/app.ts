@@ -1,12 +1,15 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import prisma from './config/database';
+import psychologistsRouter from "./routes/psychologists.routes";
+
 
 const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/psychologists", psychologistsRouter);
 app.get('/api/health', async (req: Request, res: Response) => {
   try {
     await prisma.$connect();
