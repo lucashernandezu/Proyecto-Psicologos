@@ -6,6 +6,7 @@ class UserController {
   async register(req: Request, res: Response) {
     try {
       const userData = req.body;
+
       const newUser = await userService.createUser(userData);
 
       res.status(201).json({
@@ -31,6 +32,7 @@ class UserController {
   async getProfile(req: Request, res: Response) {
     try {
       const userId = req.user!.userId;
+
       const user = await userService.getUserById(userId);
 
       res.status(200).json({

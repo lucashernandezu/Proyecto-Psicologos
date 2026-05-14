@@ -33,6 +33,7 @@ export const validateRut = (rut: string): boolean => {
     }
 
     const cleanedRut = cleanRut(rut);
+
     const [rutNumbers, providedDigit] = cleanedRut.split('-');
 
     const correctDigit = calculateVerificationDigit(rutNumbers);
@@ -48,6 +49,7 @@ export const formatRut = (rut: string): string => {
     if (cleaned.length < 2) return cleaned;
 
     const body = cleaned.slice(0, -1);
+    
     const digit = cleaned.slice(-1).toUpperCase();
 
     const formattedBody = body.replace(/\B(?=(\d{3})+(?!\d))/g, '.');

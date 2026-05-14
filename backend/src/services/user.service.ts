@@ -1,5 +1,5 @@
 import prisma from '../config/database'
-import { RegisterUserDTO, UpdateUserDTO, LoginUserDTO, UserResponse, AuthResponse } from '../types/user.types'
+import { RegisterUserDTO, UpdateUserDTO, UserResponse } from '../types/user.types'
 import { hashPassword, comparePassword } from '../utils/password.utils';
 import { cleanRut } from '../utils/rut.utils';
 
@@ -39,10 +39,13 @@ class UserService {
         });
 
         const { password, ...userWithoutPassword } = user;
+
         return userWithoutPassword;
 
     }
+
     async getUserById(userId: number): Promise<UserResponse> {
+
         const user = await prisma.user.findUnique({
             where: { id: userId }
         });
@@ -52,6 +55,7 @@ class UserService {
         }
 
         const { password, ...userWithoutPassword } = user;
+
         return userWithoutPassword;
     }
 
@@ -64,6 +68,7 @@ class UserService {
     }
 
     async getDashboardStats() {
+
         return {
             totalUsers: await prisma.user.count(),
             totalPatients: await prisma.registeredPatient.count(),
@@ -95,6 +100,7 @@ class UserService {
     }
 
     async changeUserPassword(userId: number, currentPassword: string, newPassword: string): Promise<void> {
+
         const user = await prisma.user.findUnique({
             where: { id: userId }
         });
@@ -121,7 +127,6 @@ class UserService {
             where: { id: userId },
             data: { password: hashedPassword }
         });
-
 
     }
 }
